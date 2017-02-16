@@ -55,28 +55,25 @@ class Notice
      * @param $templateId
      * @param $data
      * @param null $url
-     * @param null $color
      */
-    public function send($openIds, $templateId, $data, $url = null, $color = null)
+    public function send($openIds, $templateId, $data, $url = null)
     {
         if (is_array($openIds)) {
             foreach ($openIds as $openid) {
-                $this->sendNotice($openid, $templateId, $data, $url, $color);
+                $this->sendNotice($openid, $templateId, $data, $url);
             }
         } else {
-            $this->sendNotice($openIds, $templateId, $data, $url, $color);
+            $this->sendNotice($openIds, $templateId, $data, $url);
         }
     }
 
-    private function sendNotice($openid, $templateId, $data, $url = null, $color = null)
+    public function sendNotice($openid, $templateId, $data, $url = null)
     {
-        \Log::debug($color);
         try {
-            $this->wechat->notice->send([
+            return $this->wechat->notice->send([
                 'touser' => $openid,
                 'template_id' => $templateId,
                 'url' => $url,
-                'topcolor' => $color,
                 'data' => $data,
             ]);
         } catch (\Exception $e) {
